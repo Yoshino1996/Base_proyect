@@ -1,0 +1,143 @@
+﻿ETAPA 1 – Fundamentos y estructura real del proyecto
+
+Objetivo:
+
+Entender qué hace Program.cs
+
+Ciclo de vida de la app
+
+Archivos de configuración
+
+Estructura de carpetas
+
+Qué es pipeline, host, DI container
+
+Resultado:
+👉 Proyecto creado y comprendido estructuralmente.
+
+ETAPA 2 – Controllers, routing y endpoints
+
+Objetivo:
+
+Crear controladores
+
+Entender routing
+
+Métodos HTTP
+
+Model binding básico
+
+Resultado:
+👉 API responde correctamente a requests.
+
+ETAPA 3 – Entity Framework Core (base)
+
+Objetivo:
+
+DbContext
+
+DbSet
+
+Conexión
+
+Migrations
+
+CRUD simple
+
+Resultado:
+👉 Datos persistidos en base de datos real.
+
+ETAPA 4 – Arquitectura por capas
+
+Objetivo:
+
+Controllers → Services → Repositories
+
+Interfaces
+
+Inyección correcta
+
+Resultado:
+👉 Separación clara de responsabilidades.
+
+ETAPA 5 – DTOs, validaciones y AutoMapper
+
+Objetivo:
+
+No exponer entidades
+
+Mapear correctamente
+
+Validar entradas
+
+Resultado:
+👉 API profesional y segura.
+
+ETAPA 6 – LINQ, relaciones y consultas reales
+
+Objetivo:
+
+Relaciones 1-N / N-N
+
+Include
+
+Select
+
+Proyecciones
+
+Resultado:
+👉 Consultas reales de negocio.
+
+ETAPA 7 – Manejo profesional de excepciones
+
+Objetivo:
+
+Middleware de excepciones
+
+Throw correcto
+
+Respuestas limpias
+
+Resultado:
+👉 API robusta.
+
+ETAPA 8 – Swagger, Postman y pruebas
+
+Objetivo:
+
+Documentar API
+
+Probar endpoints
+
+Entender contratos
+
+Resultado:
+👉 API usable por terceros.
+
+ETAPA 9 – Autenticación (teórica aplicada)
+
+Objetivo:
+
+Entender JWT
+
+Claims
+
+Roles
+
+Dónde entra en el flujo
+
+Resultado:
+👉 Comprensión completa del sistema de seguridad.
+
+ETAPA 10 – Refactor y buenas prácticas
+
+Objetivo:
+
+Código limpio
+
+Mejoras
+
+Revisión final
+
+Resultado:
+👉 Proyecto presentable como portafolio.
