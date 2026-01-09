@@ -24,7 +24,7 @@ namespace Base_proyect.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             return Ok(_Service.GetById(id));
