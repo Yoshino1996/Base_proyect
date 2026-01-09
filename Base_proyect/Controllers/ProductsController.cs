@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Base_proyect.Data;
 using Base_proyect.Models;
+using Base_proyect.Services.Interfaces;
 
 namespace Base_proyect.Controllers
 {
@@ -8,66 +8,46 @@ namespace Base_proyect.Controllers
     [Route("Api/[Controller]")]
     public class ProductsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IProductService _Service;
 
-        public ProductsController(AppDbContext context)
+
+        public ProductsController(IProductService Service)
         {
-            _context = context;
+            _Service = Service;
         }
+
 
         [HttpGet]
-        public IActionResult GetAll() {
-            var product = _context.Products.ToList();
-            return Ok(product);
+        public IActionResult GetAll()
+        {
+            return Ok(_Service.GetAll());
         }
-        [HttpGet("{id}")]
+
+
+        [HttpGet]
         public IActionResult GetById(int id)
         {
-            var product = _context.Products.Find(id);
-            if (product == null) 
-                return NotFound();
-
-            return Ok(product);
+            return Ok(_Service.GetById(id));
         }
+
         [HttpPost]
-        public IActionResult Post([FromBody] Product product)
-        {
-            _context.Products.Add(product);
-            _context.SaveChanges();
-            return CreatedAtAction(nameof(GetById), new {id= product.Id}, product);        
-            
-        }
-        [HttpDelete]
-        public IActionResult DeleteById(int id)
-        {
-
-            var product = _context.Products.Where(a => a.Id == id).FirstOrDefault();
-
-            if(product ==null)
-                return NotFound();
-
-            _context.Products.Remove(product);
-            _context.SaveChanges();
-
-            return NoContent();
+        public IActionResult Create(Product product) {
+            var created = _Service.Create(product);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
         [HttpPut]
-        public IActionResult Put([FromBody] Product Update, int id){
-
-            var product = _context.Products.Find(id);
-
-            if(product ==null)
+        public IActionResult Update(int id, Product product) { 
+            var update= _Service.Update(id, product);
+            if (update == null)
                 return NotFound();
-
-            product.Name = Update.Name;
-            product.Price = Update.Price;
-            product.stock = Update.stock;
-
-            _context.SaveChanges();
-
-            return Ok(product);
-
-
+            return Ok(update);
+        
+        
+        }
+        [HttpDelete]
+        public IActionResult Delete(int id) {
+            _Service.Delete(id);
+            return NoContent();     
         }
 
     }

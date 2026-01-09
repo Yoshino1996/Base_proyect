@@ -1,10 +1,17 @@
 using Base_proyect.Data;
+using Base_proyect.Repositories;
+using Base_proyect.Repositories.Interfaces;
+using Base_proyect.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Base_proyect.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
