@@ -1,9 +1,10 @@
 using Base_proyect.Data;
+using Base_proyect.Middleware;
 using Base_proyect.Repositories;
 using Base_proyect.Repositories.Interfaces;
+using Base_proyect.Services;
 using Base_proyect.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Base_proyect.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionMiddleware>();
+
 
 app.MapControllers();
 

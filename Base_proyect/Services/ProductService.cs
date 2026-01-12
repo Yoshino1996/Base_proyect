@@ -1,7 +1,9 @@
-﻿using Base_proyect.Models;
+﻿using Base_proyect.DTOs;
+using Base_proyect.Exceptions;
+using Base_proyect.Models;
 using Base_proyect.Repositories.Interfaces;
 using Base_proyect.Services.Interfaces;
-
+using Base_proyect.Middleware;
 
 namespace Base_proyect.Services
 {
@@ -14,41 +16,99 @@ namespace Base_proyect.Services
             _repository = repository;
         }
 
-        public List<Product> GetAll()
+        public List<ProductDto> GetAll()
         {
-            return _repository.GetAll();
+            var products = _repository.GetAll();
+
+            return products.Select(p => new ProductDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price
+            }).ToList();
         }
-        public Product? GetById(int id)
-        {
-            return _repository.GetById(id);
-        }
-        public Product Create(Product product)
-        {
-            _repository.add(product);
-            return product;
-        }
-        public Product Update(int id, Product Update)
+        public ProductDto GetById(int id)
         {
             var product = _repository.GetById(id);
 
-            if(product==null)
-                return null!;
+            if (product == null)
+                throw new NotFoundException("Product not found");
 
-            product.Name = Update.Name;
-            product.Price = Update.Price;
-            product.stock = Update.stock;
+            return new ProductDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price
+            };
+        }
 
+
+
+
+        public ProductDto Create(ProductCreateDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.Name))
+            {
+                throw new ValidationException("Name is required");
+            }
+            if (dto.Price <= 0)
+            {
+                throw new ValidationException("price must be greater than zero");
+            }
+            var product = new Product
+            {
+                Name = dto.Name,
+                Price = dto.Price
+            };
+
+            _repository.add(product);
+
+            return new ProductDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price
+            };
+        }
+
+        public ProductDto Update(int id, ProductCreateDto dto)
+        {
+            var product = _repository.GetById(id);
+
+            if (product == null)
+                throw new NotFoundException("Product not found");
+
+            if (string.IsNullOrWhiteSpace(dto.Name))
+            {
+                throw new ValidationException("Name is required");
+            }
+            if (dto.Price <= 0)
+            {
+                throw new ValidationException("price must be greater than zero");
+            }
+
+            product.Name = dto.Name;
+            product.Price = dto.Price;
 
             _repository.update(product);
-            return product;
 
+            return new ProductDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price
+            };
         }
+
         public void Delete(int id)
         {
             var product = _repository.GetById(id);
+            if (product==null)
+            {
+                throw new NotFoundException("product not found");
+            }
 
-            if (product != null)
-                _repository.Delete(product);
+            _repository.Delete(product);
         }
 
     }

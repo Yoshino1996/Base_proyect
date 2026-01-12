@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Base_proyect.Models;
 using Base_proyect.Services.Interfaces;
+using Base_proyect.DTOs;
 
 namespace Base_proyect.Controllers
 {
@@ -31,13 +32,13 @@ namespace Base_proyect.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Product product) {
-            var created = _Service.Create(product);
+        public IActionResult Create(ProductCreateDto dto) {
+            var created = _Service.Create(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
         [HttpPut]
-        public IActionResult Update(int id, Product product) { 
-            var update= _Service.Update(id, product);
+        public IActionResult Update(int id, ProductCreateDto dto) { 
+            var update= _Service.Update(id, dto);
             if (update == null)
                 return NotFound();
             return Ok(update);
