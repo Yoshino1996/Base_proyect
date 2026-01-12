@@ -1,6 +1,1 @@
-﻿namespace Base_proyect
-{
-    public class readme
-    {
-    }
-}
+this project it´s just a test project.
