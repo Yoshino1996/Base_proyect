@@ -3,29 +3,27 @@ using Base_proyect.Exceptions;
 using Base_proyect.Models;
 using Base_proyect.Repositories.Interfaces;
 using Base_proyect.Services.Interfaces;
-using Base_proyect.Middleware;
+using Base_proyect.Mapping;
+using AutoMapper;
 
 namespace Base_proyect.Services
 {
     public class ProductService : IProductService
     {
         private readonly IProductRepository _repository;
+        private readonly IMapper _mapper;
 
-        public ProductService(IProductRepository repository)
+        public ProductService(IProductRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public List<ProductDto> GetAll()
         {
             var products = _repository.GetAll();
 
-            return products.Select(p => new ProductDto
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Price = p.Price
-            }).ToList();
+            return _mapper.Map<List<ProductDto>>(products);
         }
         public ProductDto GetById(int id)
         {
@@ -34,12 +32,7 @@ namespace Base_proyect.Services
             if (product == null)
                 throw new NotFoundException("Product not found");
 
-            return new ProductDto
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Price = product.Price
-            };
+            return _mapper.Map<ProductDto>(product);
         }
 
 
@@ -55,20 +48,11 @@ namespace Base_proyect.Services
             {
                 throw new ValidationException("price must be greater than zero");
             }
-            var product = new Product
-            {
-                Name = dto.Name,
-                Price = dto.Price
-            };
+            var product = _mapper.Map<Product>(dto);
 
             _repository.add(product);
 
-            return new ProductDto
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Price = product.Price
-            };
+            return _mapper.Map<ProductDto>(product);
         }
 
         public ProductDto Update(int id, ProductCreateDto dto)
@@ -87,17 +71,10 @@ namespace Base_proyect.Services
                 throw new ValidationException("price must be greater than zero");
             }
 
-            product.Name = dto.Name;
-            product.Price = dto.Price;
-
+            _mapper.Map(dto, product);
             _repository.update(product);
+            return _mapper.Map<ProductDto>(product);
 
-            return new ProductDto
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Price = product.Price
-            };
         }
 
         public void Delete(int id)
